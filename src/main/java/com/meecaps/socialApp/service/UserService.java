@@ -19,4 +19,8 @@ public interface UserService  {
     User getById(Long id);
 
     User findByUserEmail(String email);
+
+    List<User> getAllUserByCriteria();
+
+     List<User> GetUserNameByCriteriaApI(String userName);
 }

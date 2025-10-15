@@ -7,6 +7,13 @@ import com.meecaps.socialApp.repository.UserRepository;
 import com.meecaps.socialApp.request.UserRequest;
 import com.meecaps.socialApp.response.UserResponse;
 import com.meecaps.socialApp.service.UserService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,8 +25,14 @@ public class UserServiceImpl implements UserService {
 
     final private UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    final private EntityManager entityManager ;
+
+    private final PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository, EntityManager entityManager, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.entityManager = entityManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -28,7 +41,8 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(userRequest.getUsername());
         user.setEmail(userRequest.getEmail());
-        user.setPassword(userRequest.getPassword());
+//        user.setPassword(userRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
        userRepository.save(user);
          return "user created successfully";
 
@@ -77,18 +91,65 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-//    public List<UserResponse> getAllUsers(){
+    public List<UserResponse> getAllUsers() {
+
 //        List<User> userList = userRepository.findAll();
-//        return userList.stream().map(UserResponse :: new).toList();
+//        List<UserResponse> user = new ArrayList();
+//        for(User us : userList){
+//            UserResponse  userResponse  = new UserResponse(us);
+//        user.add(userResponse);
+//
+//        }
+//        return user;
+//         }
 
-    public List<UserResponse> getAllUsers(){
         List<User> userList = userRepository.findAll();
-        List<UserResponse> user = new ArrayList();
-        for(User us : userList){
-            UserResponse  userResponse  = new UserResponse(us);
-        user.add(userResponse);
+        return userList.stream().map(UserResponse :: new).toList();
 
-        }
-        return user;
     }
+
+
+
+
+
+
+    public List<User> getAllUserByCriteria(){
+
+
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+    CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+
+    Root<User> root  = criteriaQuery.from(User.class);
+
+    // select * from user
+
+    criteriaQuery.select(root);
+
+    return entityManager .createQuery(criteriaQuery).getResultList();
+
+
+
+    }
+
+
+    public List<User> GetUserNameByCriteriaApI(String userName){
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
+
+        Root <User> root = criteriaQuery.from(User.class);
+
+        Predicate condition = criteriaBuilder.equal(root.get("username"), userName);
+
+        criteriaQuery.select(root).where(condition);
+
+        TypedQuery<User> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
+    }
+
+
+
+
 }

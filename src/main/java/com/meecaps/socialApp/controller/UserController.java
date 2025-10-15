@@ -26,7 +26,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/User")
+@RequestMapping("/user")
 public class UserController {
 
     final private UserService userService;
@@ -45,6 +45,15 @@ public class UserController {
     @GetMapping("/get")
     public List<UserResponse> getAllUser(){
         return userService.getAllUsers();
+    }
+
+    @GetMapping("/get/Criteria")
+    public List<User> getAllUserByCriteria(){
+        return userService.getAllUserByCriteria();
+    }
+    @GetMapping("/get/GetUserNameByCriteriaApI")
+    public List<User> GetUserNameByCriteria(){
+        return userService.GetUserNameByCriteriaApI("username");
     }
 
     @GetMapping("/by-email")
