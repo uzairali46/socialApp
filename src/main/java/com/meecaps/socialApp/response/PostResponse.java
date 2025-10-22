@@ -12,7 +12,7 @@ public class PostResponse {
     public PostResponse(Post post){
         this.content = post.getContent();
         this.postedAt = post.getPostedAt();
-        this.userName = post.getAuthorID().getUsername();
+        this.userName = post.getAuthorID().getUserName();
     }
 
     public String getContent() {

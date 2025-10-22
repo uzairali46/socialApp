@@ -39,8 +39,9 @@ public class UserServiceImpl implements UserService {
     public String createUser(UserRequest userRequest) {
 
         User user = new User();
-        user.setUsername(userRequest.getUsername());
+        user.setUserName(userRequest.getUsername());
         user.setEmail(userRequest.getEmail());
+        user.setRole(userRequest.getRole());
 //        user.setPassword(userRequest.getPassword());
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
        userRepository.save(user);
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService {
     public User updateUser(Long id, User userRequest) {
 
         User user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("id not found"));
-        user.setUsername(userRequest.getUsername());
+        user.setUserName(userRequest.getUserName());
         user.setPassword(userRequest.getPassword());
         user.setEmail(userRequest.getEmail());
          return   userRepository.save(user);

@@ -8,7 +8,7 @@ public class UserResponse {
     private String email;
 
     public UserResponse(User user) {
-        this.userName = user.getUsername();
+        this.userName = user.getUserName();
                 this.email = user.getEmail();
     }
 

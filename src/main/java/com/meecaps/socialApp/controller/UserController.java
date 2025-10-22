@@ -42,7 +42,7 @@ public class UserController {
         return userService.createUser(userrequest);
     }
 
-    @GetMapping("/get")
+    @GetMapping("/get/All")
     public List<UserResponse> getAllUser(){
         return userService.getAllUsers();
     }
@@ -51,17 +51,20 @@ public class UserController {
     public List<User> getAllUserByCriteria(){
         return userService.getAllUserByCriteria();
     }
+
+
     @GetMapping("/get/GetUserNameByCriteriaApI")
     public List<User> GetUserNameByCriteria(){
         return userService.GetUserNameByCriteriaApI("username");
     }
+
 
     @GetMapping("/by-email")
     public User findByUserEmail(@RequestParam String email){
         return userService.findByUserEmail(email);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public User getById(@PathVariable Long id){
         return userService.getById(id);
     }

@@ -14,10 +14,13 @@ public class User {
 
     @Column(nullable = false)
     private Long Id;
-    private String username;
+    private String userName;
     private String password;
 
     @Column(nullable = false)
     private String email;
+
+    @Column (nullable = false)
+    private String role;
 
 }
