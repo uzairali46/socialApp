@@ -1,2 +1,3 @@
-This is a social app project built using Java and spring boot
-authorn - syed uzair ali
+This is a social app project built using Java and spring boot.
+<br>
+author - syed uzair ali
